@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace Tutorial.CSharp.Primary.Snake {
     class Program {
@@ -24,22 +25,29 @@ namespace Tutorial.CSharp.Primary.Snake {
         static int? bean_x = null;
         static int? bean_y = null;
 
+        static Direction direction = Direction.Right;
+
         static void Main(string[] args) {
             Console.CursorVisible = false;
             GenBean();
             Draw();
 
-            for (var key = Console.ReadKey(); key.Key != ConsoleKey.Escape; key = Console.ReadKey()) {
-                switch (key.Key) {
-                    case ConsoleKey.UpArrow: head_y--; break;
-                    case ConsoleKey.DownArrow: head_y++; break;
-                    case ConsoleKey.LeftArrow: head_x--; break;
-                    case ConsoleKey.RightArrow: head_x++; break;
-                    default: break;
-                }
+            new Timer(Callback, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
 
-                Draw();
+            for (var key = Console.ReadKey(); key.Key != ConsoleKey.Escape; key = Console.ReadKey()) {
+                //switch (key.Key) {
+                //    case ConsoleKey.UpArrow: head_y--; break;
+                //    case ConsoleKey.DownArrow: head_y++; break;
+                //    case ConsoleKey.LeftArrow: head_x--; break;
+                //    case ConsoleKey.RightArrow: head_x++; break;
+                //    default: break;
+                //}
             }
+        }
+
+        static void Callback(object state) {
+            Update();
+            Draw();
         }
 
         static void GenBean() {
@@ -100,5 +108,20 @@ namespace Tutorial.CSharp.Primary.Snake {
                 Console.WriteLine();
             }
         }
+
+        static void MoveSnake(Direction direction) {
+
+        }
+
+        static void Update() {
+            MoveSnake(direction);
+        }
+    }
+
+    public enum Direction {
+        Up = 1,
+        Right,
+        Down,
+        Left
     }
 }
